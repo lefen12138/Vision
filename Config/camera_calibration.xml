@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+    camera_calibration.xml —— 示例相机标定文件
+
+    格式说明：OpenCV FileStorage 标准 XML 格式
+    生成方式：通常由 cv::calibrateCamera() 函数自动生成
+             本文件为典型工业 USB 摄像头的示例参数
+
+    参数说明：
+      camera_matrix    相机内参矩阵 K（3×3）
+                       K = [fx  0   cx]
+                           [0   fy  cy]
+                           [0   0   1 ]
+                       fx, fy : 焦距（像素），通常 fx ≈ fy
+                       cx, cy : 主点坐标（像素），通常接近图像中心
+
+      dist_coeffs      畸变系数（1×5）
+                       [k1  k2  p1  p2  k3]
+                       k1,k2,k3 : 径向畸变（鱼眼镜头 k1 较大）
+                       p1,p2    : 切向畸变（通常很小）
+
+      pixel_equiv_gear  齿轮目标像素当量（mm/pixel）
+                        = 已知物理尺寸(mm) ÷ 对应像素数
+                        典型值：0.03~0.10 mm/pixel
+                        由标定板测量计算得到
+
+      pixel_equiv_nut   螺母目标像素当量（mm/pixel）
+
+      pixel_equiv_default 默认像素当量（mm/pixel）
+
+    本文件为 1280×720 分辨率、焦距约 800 像素的参考参数
+    实际使用时请用 OpenCV 标定程序重新标定你的相机
+-->
+<opencv_storage>
+
+  <!-- ============================================
+       相机内参矩阵（3×3 双精度浮点）
+       本例：fx=fy=800px，cx=640px，cy=360px
+  ============================================ -->
+  <camera_matrix type_id="opencv-matrix">
+    <rows>3</rows>
+    <cols>3</cols>
+    <dt>d</dt>
+    <data>
+      800.0   0.0   640.0
+        0.0 800.0   360.0
+        0.0   0.0     1.0
+    </data>
+  </camera_matrix>
+
+  <!-- ============================================
+       径向+切向畸变系数（1×5）
+       本例：低畸变镜头，各系数接近 0
+  ============================================ -->
+  <dist_coeffs type_id="opencv-matrix">
+    <rows>1</rows>
+    <cols>5</cols>
+    <dt>d</dt>
+    <data>
+      -0.032  0.015  0.0003  -0.0002  0.002
+    </data>
+  </dist_coeffs>
+
+  <!-- ============================================
+       像素当量（mm/pixel）
+       说明：用标准齿轮（已知外径）在工作距离处
+             测量像素数后计算得到
+       公式：e = 已知外径(mm) ÷ 测量像素数(px)
+  ============================================ -->
+  <!-- 齿轮目标像素当量（工作距离约 500mm） -->
+  <pixel_equiv_gear>0.050</pixel_equiv_gear>
+
+  <!-- 螺母目标像素当量（螺母较小，工作距离约 400mm） -->
+  <pixel_equiv_nut>0.040</pixel_equiv_nut>
+
+  <!-- 默认像素当量（未指定目标类型时使用） -->
+  <pixel_equiv_default>0.050</pixel_equiv_default>
+
+</opencv_storage>
